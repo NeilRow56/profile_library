@@ -1,0 +1,232 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // uses connection pooling
+  directUrl = env("DATABASE_URL_UNPOOLED") // uses a direct connection
+}
+
+model BookCategory {
+  category_id         Int                   @id @default(autoincrement())
+  category_name       String                @db.VarChar(255)
+  bookCategoryLinks   BookCategoryLink[]
+
+   @@map("categories")
+}
+
+model Book {
+  bookId              Int                   @id @default(autoincrement())
+  isbn                String                @db.VarChar(13)
+  name                String                @db.VarChar(255)
+  author              String                @db.VarChar(80)
+  noOfCopies          Int                   @db.SmallInt
+  isActive            Boolean               @default(true)
+  publishYear         Int                   @db.SmallInt
+  createdAt           DateTime              @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime              @default(now()) @db.Timestamp(0)
+  bookCategoryLinks   BookCategoryLink[]
+  bookPhotos          BookPhoto[]
+  borrowings          Borrowing[]
+  ratings             Rating[]
+  reservations        Reservation[]
+  staffPicks          StaffPick[]
+
+   @@map("books")
+}
+
+model BookCategoryLink {
+  bookId         Int
+  categoryId     Int
+  books           Book           @relation(fields: [bookId], references: [bookId], onDelete: Cascade, onUpdate: NoAction, map: "book_category_links_ibfk_1")
+  bookCategories  BookCategory @relation(fields: [categoryId], references: [category_id], onDelete: Cascade, onUpdate: NoAction, map: "book_category_links_ibfk_2")
+
+  @@id([bookId, categoryId])
+  @@index([categoryId])
+
+   @@map("book_category_links")
+}
+
+model Activity {
+  activityId     Int               @id @default(autoincrement())
+  title           String            @db.VarChar(255)
+  description     String?           @db.Text
+  activityDate    DateTime          @db.Date
+  startTime       String            @db.VarChar(10)
+  endTime         String            @db.VarChar(10)
+  ageGroup        String?           @db.VarChar(20)
+  capacity        Int?
+  photoUrl        String?           @db.VarChar(1024)
+  createdAt       DateTime?         @default(now()) @db.Timestamp(0)
+  updated_at      DateTime?         @default(now()) @db.Timestamp(0)
+  activityPhotos  ActivityPhoto[]
+
+   @@map("activities")
+}
+model ActivityPhoto {
+  photoId     Int        @id @default(autoincrement())
+  activityId  Int
+  url         String     @db.VarChar(1024)
+  createdAt   DateTime?  @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime?  @default(now()) @db.Timestamp(0)
+  activities  Activity @relation(fields: [activityId], references: [activityId], onDelete: Cascade, onUpdate: NoAction, map: "activity_photos_ibfk_1")
+  @@index([activityId])
+
+   @@map("activity_photos")
+}
+model BookPhoto {
+  photoId    Int       @id @default(autoincrement())
+  bookId     Int
+  url        String    @db.VarChar(1024)
+  createdAt  DateTime? @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime? @default(now()) @db.Timestamp(0)
+  books      Book     @relation(fields: [bookId], references: [bookId], onDelete: Cascade, onUpdate: NoAction, map: "book_photos_ibfk_1")
+  @@index([bookId])
+
+   @@map("book_photos")
+}
+model Borrowing {
+  borrowingId  Int       @id @default(autoincrement())
+  bookId       Int
+  userId       String
+  borrowDate   DateTime  @db.Date
+  dueDate      DateTime  @db.Date
+  returnDate   DateTime? @db.Date
+  books        Book     @relation(fields: [bookId], references: [bookId], onDelete: NoAction, onUpdate: NoAction, map: "borrowings_ibfk_1")
+  users        User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "borrowings_ibfk_2")
+  fines        Fine[]
+  @@index([bookId])
+  @@index([userId])
+
+   @@map("borrowings")
+}
+model Fine {
+  fineId       Int        @id @default(autoincrement())
+  borrowingId  Int
+  userId       String
+  fineAmount   Decimal    @db.Decimal(10, 2)
+  fineDate     DateTime   @db.Date
+  paidDate     DateTime?  @db.Date
+  borrowings   Borrowing @relation(fields: [borrowingId], references: [borrowingId], onDelete: NoAction, onUpdate: NoAction, map: "fines_ibfk_1")
+  users        User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fines_ibfk_2")
+  @@index([borrowingId], map: "borrowingId")
+  @@index([userId])
+
+   @@map("fines")
+}
+model Rating {
+  ratingId   Int      @id @default(autoincrement())
+  bookId     Int
+  userId     String
+  rating     Int      
+  review     String?  @db.Text
+  createdAt  DateTime @default(now()) @db.Timestamp(0)
+  books      Book    @relation(fields: [bookId], references: [bookId], onDelete: NoAction, onUpdate: NoAction, map: "ratings_ibfk_1")
+  users      User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ratings_ibfk_2")
+  @@index([bookId])
+  @@index([userId])
+
+   @@map("ratings")
+}
+model Reservation {
+  reservationId    Int      @id @default(autoincrement())
+  bookId           Int
+  userId           String
+  reservationDate  DateTime @db.Date
+  expirationDate   DateTime @db.Date
+  books            Book    @relation(fields: [bookId], references: [bookId], onDelete: NoAction, onUpdate: NoAction, map: "reservations_ibfk_1")
+  users            User   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reservations_ibfk_2")
+  @@index([bookId])
+  @@index([userId])
+
+   @@map("reservations")
+}
+model StaffPick {
+  pickId    Int      @id @default(autoincrement())
+  bookId    Int
+  userId    String
+  pickDate  DateTime @db.Date
+  books     Book    @relation(fields: [bookId], references: [bookId], onDelete: NoAction, onUpdate: NoAction, map: "staffPicks_ibfk_1")
+  users     User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "staffPicks_ibfk_2")
+  @@index([bookId], map: "bookId")
+  @@index([userId], map: "userId")
+
+   @@map("staffPicks")
+}
+
+
+model User {
+  id              String         @id @default(cuid())
+  username        String
+  email           String         @unique
+  profilePic      String
+  libraryCardNo   String         @db.VarChar(10)
+  profileStatus   String?        @db.VarChar(10)
+  role            String         @db.VarChar(10)
+  isAdmin         Boolean        @default(false)
+  isActive        Boolean        @default(true)
+  clerkUserId     String         @unique
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  lastLoginAt     DateTime?      @db.Timestamp(0)
+  borrowings      Borrowing[]
+  fines           Fine[]
+  ratings         Rating[]
+  reservations    Reservation[]
+  staffPicks      StaffPick[]
+ 
+  Profile      Profile[]
+ 
+  
+  @@map("users")
+}
+// profile model
+model Profile {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  country          String
+  county           String
+  town             String
+  address          String
+  postCode         String?
+  resume           Resume[]
+  job              Job[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+ 
+
+ @@map("profiles")
+}
+model Resume {
+  id               String   @id @default(cuid())
+  title            String
+  profileId        String
+  profile          Profile     @relation(fields: [profileId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+ @@map("resumes")
+}
+model Job {
+  id               String   @id @default(cuid())
+  profileId        String
+  profile          Profile     @relation(fields: [profileId], references: [id])
+  title            String
+  company          String
+  from             DateTime
+  to               DateTime
+  description      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+ @@map("jobs")
+}
+
