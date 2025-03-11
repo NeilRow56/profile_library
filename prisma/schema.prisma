@@ -176,7 +176,6 @@ model User {
   ratings         Rating[]
   reservations    Reservation[]
   staffPicks      StaffPick[]
- 
   Profile      Profile[]
  
   
