@@ -1,7 +1,9 @@
+'use client'
 import React from 'react'
 
 import Logo from '../shared/Logo'
 import SearchBar from '../shared/SearchBar'
+import ThemeModeToggle from '../ThemeModeToggle'
 
 function Header() {
   return (
@@ -22,6 +24,7 @@ function Header() {
         <div className='hidden items-center justify-between sm:flex'>
           {/* logo */}
           <Logo />
+          <ThemeModeToggle />
           <SearchBar />
         </div>
       </header>
