@@ -3,7 +3,7 @@ import React from 'react'
 
 import Logo from '../shared/Logo'
 import SearchBar from '../shared/SearchBar'
-import { ThemeToggle } from './theme-toggle'
+import { ThemeToggle } from '../ThemeToggle'
 
 function Header() {
   return (
