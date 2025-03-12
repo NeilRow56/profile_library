@@ -9,12 +9,13 @@ import {
 } from '@/components/ui/navigation-menu'
 
 import { addWeeks, format } from 'date-fns'
+import { User2Icon } from 'lucide-react'
 
 function Navbar() {
   const from = format(new Date(), 'yyyy-MM-dd')
   const to = format(addWeeks(new Date(), 2), 'yyyy-MM-dd')
   return (
-    <nav className='bg-primary hidden w-full rounded-md text-white sm:block'>
+    <nav className='hidden w-full border-b border-gray-200 sm:block'>
       <div className='container mx-auto flex items-center justify-between p-4'>
         <div className='flex items-center space-x-8'>
           <Link href='/' className='hover:text-gray-400'>
@@ -32,7 +33,7 @@ function Navbar() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className='text-primary'>
+                <NavigationMenuTrigger className='text-white'>
                   Library resources
                 </NavigationMenuTrigger>
 
@@ -84,7 +85,8 @@ function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div>User Button</div>
+
+        <User2Icon />
       </div>
     </nav>
   )

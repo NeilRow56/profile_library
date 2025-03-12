@@ -6,7 +6,7 @@ import React from 'react'
 
 function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='bg-gray-50'>
+    <div className='container mx-auto'>
       <Header />
       <Navbar />
       {children}

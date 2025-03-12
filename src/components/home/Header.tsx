@@ -3,12 +3,12 @@ import React from 'react'
 
 import Logo from '../shared/Logo'
 import SearchBar from '../shared/SearchBar'
-import ThemeModeToggle from '../ThemeModeToggle'
+import { ThemeToggle } from './theme-toggle'
 
 function Header() {
   return (
     <>
-      <header className='container mx-auto bg-gray-50 py-2 lg:py-4'>
+      <header className='container mx-auto py-2 lg:py-4'>
         {/* mobile */}
         <div className='flex flex-col justify-between p-6 sm:hidden'>
           <div className='flex items-center'>
@@ -21,10 +21,10 @@ function Header() {
         </div>
 
         {/* desktop */}
-        <div className='hidden items-center justify-between p-6 sm:flex'>
+        <div className='hidden items-center justify-between gap-2 p-6 sm:flex'>
           {/* logo */}
           <Logo />
-          <ThemeModeToggle />
+          <ThemeToggle />
           <SearchBar />
         </div>
       </header>

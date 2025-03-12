@@ -45,7 +45,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-[data-theme='zinc-light'] {
+/* [data-theme='zinc-light'] {
   --background: hsl(0 0% 100%);
   --foreground: hsl(240 10% 3.9%);
   --card: hsl(0 0% 100%);
@@ -403,9 +403,9 @@
   --sidebar-accent-foreground: var(--sidebar-foreground);
   --sidebar-border: var(--sidebar-accent);
   --sidebar-ring: var(--ring);
-}
+} */
 
-[data-theme='blue-light'] {
+:root {
   --background: hsl(0 0% 100%);
   --foreground: hsl(222.2 84% 4.9%);
   --card: hsl(0 0% 100%);
@@ -441,7 +441,7 @@
   --sidebar-ring: var(--ring);
 }
 
-[data-theme='blue-dark'] {
+.dark {
   --background: hsl(222.2 84% 4.9%);
   --foreground: hsl(210 40% 98%);
   --card: hsl(222.2 84% 4.9%);
@@ -477,7 +477,7 @@
   --sidebar-ring: var(--ring);
 }
 
-[data-theme='yellow-light'] {
+/* [data-theme='yellow-light'] {
   --background: hsl(0 0% 100%);
   --foreground: hsl(20 14.3% 4.1%);
   --card: hsl(0 0% 100%);
@@ -619,4 +619,4 @@
   --sidebar-accent-foreground: var(--sidebar-foreground);
   --sidebar-border: var(--sidebar-accent);
   --sidebar-ring: var(--ring);
-}
+} */
