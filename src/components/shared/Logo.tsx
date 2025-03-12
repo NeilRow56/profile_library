@@ -29,12 +29,11 @@ function Logo() {
             priority
           />
         </Link>
-      </div>
-
-      <div>
-        <Link href='/'>
-          <h3 className='text-primary text-4xl font-bold'>Library</h3>
-        </Link>
+        <div>
+          <Link href='/'>
+            <h3 className='text-primary text-4xl font-bold'>Library</h3>
+          </Link>
+        </div>
       </div>
     </div>
   )
