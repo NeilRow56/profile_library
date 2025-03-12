@@ -8,7 +8,7 @@ import AddCategoryDialog from './AddCategoryDialog'
 function AddCategoryButton() {
   const [open, setOpen] = useState(false)
   return (
-    <div>
+    <div className='flex flex-col'>
       <Button className='self-end' onClick={() => setOpen(true)}>
         <PlusIcon />
         Add category
