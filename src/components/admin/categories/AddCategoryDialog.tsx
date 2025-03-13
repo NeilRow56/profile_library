@@ -19,6 +19,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { SubmitButton } from '@/components/shared/SubmitButton'
 import { z } from 'zod'
+import { addCategory } from '@/actions/category'
+import { usePathname } from 'next/navigation'
 
 type CategoryDialogProps = {
   open: boolean
@@ -27,13 +29,15 @@ type CategoryDialogProps = {
 }
 
 function AddCategoryDialog({ setOpen, open, category }: CategoryDialogProps) {
+  const path = usePathname()
+
   const form = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     defaultValues: { name: '' }
   })
 
   const onSubmit = async (values: z.infer<typeof categorySchema>) => {
-    console.log(values)
+    await addCategory(values.name, path)
   }
 
   return (
